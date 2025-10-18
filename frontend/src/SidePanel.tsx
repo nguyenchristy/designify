@@ -23,44 +23,54 @@ const formatObjectName = (name: string): string => {
 const SidePanel: React.FC = () => {
   const [objects, setObjects] = useState<ObjectData[]>([]);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const [subExpanded, setSubExpanded] = useState<{ [key: string]: { design: boolean; location: boolean } }>({});
+  const [designSubExpanded, setDesignSubExpanded] = useState<{ [key: string]: { color: boolean; material: boolean; size: boolean } }>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadObjectData = async () => {
-      try {
-        const response = await fetch('/output.txt');
-        if (!response.ok) {
-          throw new Error(`Failed to fetch output.txt: ${response.status}`);
-        }
-        const text = await response.text();
-        
-        // Parse JSON array from the text
-        const jsonArray = JSON.parse(text);
-        
-        // Handle both array and single object
-        const dataArray = Array.isArray(jsonArray) ? jsonArray : [jsonArray];
-        
-        const parsedObjects: ObjectData[] = dataArray.map((item) => ({
-          ...item,
-          name: item.name || 'Unknown',
-          design: `Design: ${item.name}`,
-          location: `Location: x=${item.x}, y=${item.y}`
-        }));
-        
-        setObjects(parsedObjects);
-        setError(null);
-      } catch (error) {
-        console.error('Error loading output.txt:', error);
-        setError(error instanceof Error ? error.message : 'Failed to load objects');
-        setObjects([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Orange', 'Pink', 'Brown', 'Black'];
+  const materials = ['Wood', 'Metal', 'Plastic', 'Glass', 'Fabric'];
+  const sizes = ['Large', 'Medium', 'Small'];
 
-    loadObjectData();
-  }, []);
+  useEffect(() => {
+  const loadObjectData = async () => {
+    try {
+      const response = await fetch('/out-room-analysis.json');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch out-room-analysis.json: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Expecting structure: { objects: [...], style: string, colorPalette: [...] }
+      const dataArray = Array.isArray(data.objects) ? data.objects : [];
+
+      const parsedObjects: ObjectData[] = dataArray.map((item: any) => ({
+        ...item,
+        name: item.name || 'Unknown',
+        design: `Design: ${item.name}`,
+        location: `Location: x=${item.x}, y=${item.y}`
+      }));
+
+      setObjects(parsedObjects);
+      setError(null);
+
+      // Optional: log or use style and colorPalette
+      console.log('Room style:', data.style);
+      console.log('Color palette:', data.colorPalette);
+      
+    } catch (error) {
+      console.error('Error loading output.json:', error);
+      setError(error instanceof Error ? error.message : 'Failed to load objects');
+      setObjects([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadObjectData();
+}, []);
+
 
   const toggleExpanded = (objectName: string) => {
     const newExpanded = new Set(expandedItems);
@@ -70,6 +80,56 @@ const SidePanel: React.FC = () => {
       newExpanded.add(objectName);
     }
     setExpandedItems(newExpanded);
+  };
+
+  const toggleDesign = (objectName: string) => {
+    setSubExpanded(prev => ({
+      ...prev,
+      [objectName]: {
+        ...prev[objectName],
+        design: !prev[objectName]?.design
+      }
+    }));
+  };
+
+  const toggleLocation = (objectName: string) => {
+    setSubExpanded(prev => ({
+      ...prev,
+      [objectName]: {
+        ...prev[objectName],
+        location: !prev[objectName]?.location
+      }
+    }));
+  };
+
+  const toggleColor = (objectName: string) => {
+    setDesignSubExpanded(prev => ({
+      ...prev,
+      [objectName]: {
+        ...prev[objectName],
+        color: !prev[objectName]?.color
+      }
+    }));
+  };
+
+  const toggleMaterial = (objectName: string) => {
+    setDesignSubExpanded(prev => ({
+      ...prev,
+      [objectName]: {
+        ...prev[objectName],
+        material: !prev[objectName]?.material
+      }
+    }));
+  };
+
+  const toggleSize = (objectName: string) => {
+    setDesignSubExpanded(prev => ({
+      ...prev,
+      [objectName]: {
+        ...prev[objectName],
+        size: !prev[objectName]?.size
+      }
+    }));
   };
 
   const handleDesignClick = (objectName: string) => {
@@ -135,18 +195,123 @@ const SidePanel: React.FC = () => {
               <div className="dropdown-content">
                 <div 
                   className="dropdown-item"
-                  onClick={() => handleDesignClick(object.name)}
+                  onClick={() => toggleDesign(object.name)}
                 >
+                  <span className={`chevron ${subExpanded[object.name]?.design ? 'expanded' : ''}`}>
+                    ▶
+                  </span>
                   <span>🎨</span>
                   <span>Design</span>
                 </div>
+                {subExpanded[object.name]?.design && (
+                  <div className="sub-dropdown-content">
+                    <div 
+                      className="sub-dropdown-item"
+                      onClick={() => toggleColor(object.name)}
+                    >
+                      <span className={`chevron ${designSubExpanded[object.name]?.color ? 'expanded' : ''}`}>▶</span>
+                      <span>Color</span>
+                    </div>
+                    {designSubExpanded[object.name]?.color && (
+                      <div className="sub-sub-dropdown-content grid-view color-grid">
+                        {colors.map(color => (
+                          <div 
+                            key={color}
+                            className="color-swatch"
+                            style={{ backgroundColor: color.toLowerCase() }}
+                            onClick={() => handleDesignClick(`${object.name}-Color-${color}`)}
+                            title={color}
+                          >
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <div 
+                      className="sub-dropdown-item"
+                      onClick={() => toggleMaterial(object.name)}
+                    >
+                      <span className={`chevron ${designSubExpanded[object.name]?.material ? 'expanded' : ''}`}>▶</span>
+                      <span>Material</span>
+                    </div>
+                    {designSubExpanded[object.name]?.material && (
+                      <div className="sub-sub-dropdown-content">
+                        {materials.map(material => (
+                          <div 
+                            key={material}
+                            className="sub-sub-dropdown-item"
+                            onClick={() => handleDesignClick(`${object.name}-Material-${material}`)}
+                          >
+                            <span>{material}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <div 
+                      className="sub-dropdown-item"
+                      onClick={() => toggleSize(object.name)}
+                    >
+                      <span className={`chevron ${designSubExpanded[object.name]?.size ? 'expanded' : ''}`}>▶</span>
+                      <span>Size</span>
+                    </div>
+                    {designSubExpanded[object.name]?.size && (
+                      <div className="sub-sub-dropdown-content">
+                        {sizes.map(size => (
+                          <div 
+                            key={size}
+                            className="sub-sub-dropdown-item"
+                            onClick={() => handleDesignClick(`${object.name}-Size-${size}`)}
+                          >
+                            <span>{size}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div 
                   className="dropdown-item"
-                  onClick={() => handleLocationClick(object.name)}
+                  onClick={() => toggleLocation(object.name)}
                 >
+                  <span className={`chevron ${subExpanded[object.name]?.location ? 'expanded' : ''}`}>
+                    ▶
+                  </span>
                   <span>📍</span>
                   <span>Location</span>
                 </div>
+                {subExpanded[object.name]?.location && (
+                  <div className="sub-dropdown-content">
+                    <div 
+                      className="sub-dropdown-item"
+                      onClick={() => handleLocationClick(`${object.name}-Left`)}
+                    >
+                      <span>Left</span>
+                    </div>
+                    <div 
+                      className="sub-dropdown-item"
+                      onClick={() => handleLocationClick(`${object.name}-Right`)}
+                    >
+                      <span>Right</span>
+                    </div>
+                    <div 
+                      className="sub-dropdown-item"
+                      onClick={() => handleLocationClick(`${object.name}-Center`)}
+                    >
+                      <span>Center</span>
+                    </div>
+                    <div 
+                      className="sub-dropdown-item"
+                      onClick={() => handleLocationClick(`${object.name}-Back`)}
+                    >
+                      <span>Back</span>
+                    </div>
+                    <div 
+                      className="sub-dropdown-item"
+                      onClick={() => handleLocationClick(`${object.name}-Front`)}
+                    >
+                      <span>Front</span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

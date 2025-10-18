@@ -2,67 +2,102 @@
   "objects": [
     {
       "name": "bed",
-      "x": 0.38,
+      "x": 0.39,
       "y": 0.73,
-      "width": 0.75,
+      "width": 0.62,
       "height": 0.5
     },
     {
-      "name": "nightstand",
-      "x": 0.15,
-      "y": 0.81,
-      "width": 0.2,
-      "height": 0.19
-    },
-    {
-      "name": "table lamp",
-      "x": 0.15,
-      "y": 0.61,
-      "width": 0.1,
-      "height": 0.2
-    },
-    {
-      "name": "table lamp",
-      "x": 0.69,
-      "y": 0.58,
-      "width": 0.08,
-      "height": 0.2
-    },
-    {
-      "name": "bench",
-      "x": 0.71,
-      "y": 0.88,
-      "width": 0.3,
+      "name": "headboard",
+      "x": 0.385,
+      "y": 0.475,
+      "width": 0.57,
       "height": 0.15
     },
     {
-      "name": "sliding door",
-      "x": 0.82,
-      "y": 0.6,
-      "width": 0.32,
-      "height": 0.7
+      "name": "nightstand",
+      "x": 0.185,
+      "y": 0.83,
+      "width": 0.21,
+      "height": 0.18
     },
     {
-      "name": "chandelier",
-      "x": 0.85,
-      "y": 0.26,
-      "width": 0.2,
-      "height": 0.25
+      "name": "table lamp",
+      "x": 0.24,
+      "y": 0.67,
+      "width": 0.1,
+      "height": 0.16
+    },
+    {
+      "name": "nightstand",
+      "x": 0.64,
+      "y": 0.79,
+      "width": 0.12,
+      "height": 0.14
+    },
+    {
+      "name": "table lamp",
+      "x": 0.645,
+      "y": 0.66,
+      "width": 0.09,
+      "height": 0.14
+    },
+    {
+      "name": "pillows",
+      "x": 0.42,
+      "y": 0.61,
+      "width": 0.54,
+      "height": 0.16
+    },
+    {
+      "name": "bench",
+      "x": 0.825,
+      "y": 0.84,
+      "width": 0.33,
+      "height": 0.16
     },
     {
       "name": "rug",
-      "x": 0.5,
+      "x": 0.495,
       "y": 0.85,
-      "width": 1,
-      "height": 0.3
+      "width": 0.99,
+      "height": 0.28
+    },
+    {
+      "name": "chandelier",
+      "x": 0.83,
+      "y": 0.22,
+      "width": 0.26,
+      "height": 0.28
+    },
+    {
+      "name": "curtains",
+      "x": 0.69,
+      "y": 0.68,
+      "width": 0.14,
+      "height": 0.36
+    },
+    {
+      "name": "sliding door",
+      "x": 0.875,
+      "y": 0.67,
+      "width": 0.23,
+      "height": 0.38
+    },
+    {
+      "name": "ceiling beam",
+      "x": 0.3,
+      "y": 0.2,
+      "width": 0.6,
+      "height": 0.15
     }
   ],
   "style": "cozy",
   "colorPalette": [
-    "#9D5A38",
-    "#6B755E",
-    "#DBD4CC",
-    "#8E5F36",
+    "#8A4C27",
+    "#CFC8BB",
+    "#737A63",
+    "#916940",
     "#F7F7F7"
   ]
 }

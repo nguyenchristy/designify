@@ -1,0 +1,77 @@
+```json
+{
+  "objects": [
+    {
+      "name": "bed",
+      "x": 0.35,
+      "y": 0.45,
+      "width": 0.7,
+      "height": 0.4
+    },
+    {
+      "name": "nightstand",
+      "x": 0.08,
+      "y": 0.85,
+      "width": 0.16,
+      "height": 0.3
+    },
+    {
+      "name": "table lamp",
+      "x": 0.125,
+      "y": 0.6,
+      "width": 0.09,
+      "height": 0.2
+    },
+    {
+      "name": "table lamp",
+      "x": 0.6,
+      "y": 0.6,
+      "width": 0.1,
+      "height": 0.2
+    },
+    {
+      "name": "bench",
+      "x": 0.7,
+      "y": 0.835,
+      "width": 0.4,
+      "height": 0.17
+    },
+    {
+      "name": "rug",
+      "x": 0.5,
+      "y": 0.875,
+      "width": 1.0,
+      "height": 0.25
+    },
+    {
+      "name": "chandelier",
+      "x": 0.85,
+      "y": 0.16,
+      "width": 0.24,
+      "height": 0.28
+    },
+    {
+      "name": "sliding glass door",
+      "x": 0.835,
+      "y": 0.55,
+      "width": 0.27,
+      "height": 0.4
+    },
+    {
+      "name": "curtains",
+      "x": 0.675,
+      "y": 0.55,
+      "width": 0.15,
+      "height": 0.4
+    }
+  ],
+  "style": "cozy",
+  "colorPalette": [
+    "#924A28",
+    "#727A68",
+    "#F1E9DE",
+    "#A87747",
+    "#D1C7BB"
+  ]
+}
+```

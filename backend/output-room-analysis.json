@@ -2,82 +2,67 @@
   "objects": [
     {
       "name": "bed",
-      "x": 0.375,
-      "y": 0.625,
-      "width": 0.65,
-      "height": 0.65
+      "x": 0.38,
+      "y": 0.73,
+      "width": 0.75,
+      "height": 0.5
     },
     {
       "name": "nightstand",
       "x": 0.15,
-      "y": 0.85,
+      "y": 0.81,
       "width": 0.2,
+      "height": 0.19
+    },
+    {
+      "name": "table lamp",
+      "x": 0.15,
+      "y": 0.61,
+      "width": 0.1,
       "height": 0.2
     },
     {
       "name": "table lamp",
-      "x": 0.18,
-      "y": 0.7,
-      "width": 0.12,
-      "height": 0.16
-    },
-    {
-      "name": "nightstand",
-      "x": 0.58,
-      "y": 0.72,
-      "width": 0.12,
-      "height": 0.08
-    },
-    {
-      "name": "table lamp",
-      "x": 0.645,
-      "y": 0.625,
-      "width": 0.11,
-      "height": 0.15
+      "x": 0.69,
+      "y": 0.58,
+      "width": 0.08,
+      "height": 0.2
     },
     {
       "name": "bench",
-      "x": 0.815,
-      "y": 0.915,
-      "width": 0.33,
-      "height": 0.13
+      "x": 0.71,
+      "y": 0.88,
+      "width": 0.3,
+      "height": 0.15
+    },
+    {
+      "name": "sliding door",
+      "x": 0.82,
+      "y": 0.6,
+      "width": 0.32,
+      "height": 0.7
+    },
+    {
+      "name": "chandelier",
+      "x": 0.85,
+      "y": 0.26,
+      "width": 0.2,
+      "height": 0.25
     },
     {
       "name": "rug",
       "x": 0.5,
-      "y": 0.875,
+      "y": 0.85,
       "width": 1,
-      "height": 0.25
-    },
-    {
-      "name": "sliding doors",
-      "x": 0.9,
-      "y": 0.6,
-      "width": 0.2,
-      "height": 0.5
-    },
-    {
-      "name": "curtains",
-      "x": 0.76,
-      "y": 0.59,
-      "width": 0.12,
-      "height": 0.42
-    },
-    {
-      "name": "chandelier",
-      "x": 0.865,
-      "y": 0.165,
-      "width": 0.23,
-      "height": 0.23
+      "height": 0.3
     }
   ],
   "style": "cozy",
   "colorPalette": [
-    "#A45114",
-    "#5B725F",
-    "#C2B395",
-    "#8B4513",
-    "#F8F8F8",
-    "#333333"
+    "#9D5A38",
+    "#6B755E",
+    "#DBD4CC",
+    "#8E5F36",
+    "#F7F7F7"
   ]
 }

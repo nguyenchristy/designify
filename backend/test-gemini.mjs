@@ -35,15 +35,17 @@ async function main() {
   });
 
   // saves JSON in output file
-  const resultText = response.candidates[0].content.parts[0].text;
+  let resultText = response.candidates[0].content.parts[0].text;
+  resultText = resultText.replace(/```json\s*|```/g, "").trim();
+
   console.log("Gemini output:\n", resultText);
 
   try {
     const json = JSON.parse(resultText);
-    fs.writeFileSync("room-analysis.json", JSON.stringify(json, null, 2));
-    console.log("✅ Saved structured JSON as room-analysis.json");
+    fs.writeFileSync("output-room-analysis.json", JSON.stringify(json, null, 2));
+    console.log("Success! Saved structured JSON as output-room-analysis.json");
   } catch (err) {
-    console.error("❌ Gemini did not return valid JSON. Output saved in output.txt");
+    console.error("Failed! Gemini did not return valid JSON. Output saved in output.txt");
     fs.writeFileSync("output.txt", resultText);
   }
 }

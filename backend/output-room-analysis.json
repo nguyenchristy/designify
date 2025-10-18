@@ -1,0 +1,83 @@
+{
+  "objects": [
+    {
+      "name": "bed",
+      "x": 0.375,
+      "y": 0.625,
+      "width": 0.65,
+      "height": 0.65
+    },
+    {
+      "name": "nightstand",
+      "x": 0.15,
+      "y": 0.85,
+      "width": 0.2,
+      "height": 0.2
+    },
+    {
+      "name": "table lamp",
+      "x": 0.18,
+      "y": 0.7,
+      "width": 0.12,
+      "height": 0.16
+    },
+    {
+      "name": "nightstand",
+      "x": 0.58,
+      "y": 0.72,
+      "width": 0.12,
+      "height": 0.08
+    },
+    {
+      "name": "table lamp",
+      "x": 0.645,
+      "y": 0.625,
+      "width": 0.11,
+      "height": 0.15
+    },
+    {
+      "name": "bench",
+      "x": 0.815,
+      "y": 0.915,
+      "width": 0.33,
+      "height": 0.13
+    },
+    {
+      "name": "rug",
+      "x": 0.5,
+      "y": 0.875,
+      "width": 1,
+      "height": 0.25
+    },
+    {
+      "name": "sliding doors",
+      "x": 0.9,
+      "y": 0.6,
+      "width": 0.2,
+      "height": 0.5
+    },
+    {
+      "name": "curtains",
+      "x": 0.76,
+      "y": 0.59,
+      "width": 0.12,
+      "height": 0.42
+    },
+    {
+      "name": "chandelier",
+      "x": 0.865,
+      "y": 0.165,
+      "width": 0.23,
+      "height": 0.23
+    }
+  ],
+  "style": "cozy",
+  "colorPalette": [
+    "#A45114",
+    "#5B725F",
+    "#C2B395",
+    "#8B4513",
+    "#F8F8F8",
+    "#333333"
+  ]
+}

@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
+import SidePanel from './SidePanel.tsx'
 import FileUploader from './fileUploader.tsx'
 
 createRoot(document.getElementById('root')!).render(
@@ -11,7 +12,7 @@ createRoot(document.getElementById('root')!).render(
     <FileUploader 
       onUploadSuccess={(path) => console.log('File uploaded to:', path)}
       onUploadError={(error) => console.error('Upload failed:', error)}
-    />
+    <SidePanel />
   </StrictMode>,
 )
 

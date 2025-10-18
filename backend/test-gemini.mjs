@@ -13,17 +13,22 @@ async function main() {
   // asking for JSON
   const prompt = `
   Analyze this room image and describe its layout.
-  Return a JSON object with this structure:
+  Return a JSON object with this structure (no markdown, no backticks, no explanations):
   {
     "objects": [
       {"name": "bed", "x": 0.2, "y": 0.5, "width": 1.2, "height": 2.0},
       {"name": "desk", "x": 0.7, "y": 0.3, "width": 1.0, "height": 0.8}
     ],
     "style": "modern" | "cozy" | "minimalist",
-    "colorPalette": ["#hex", "#hex", ...]
+    "colorPalette": ["#HEX", "#HEX", ...]
   }
 
-  Do not include explanations — only valid JSON.
+  Guidelines:
+  - Detect and list all visible furniture or decorative items (like a bed, desk, chair, lamp, rug, curtain, chandelier, etc.).
+  - Ensure numerical values are floats between 0 and 1.
+  - Choose exactly one style.
+  - Include exactly 5 dominant colors as hex codes (no color names or explanations).
+  - Do not include explanations — only valid JSON.
   `;
 
   const response = await ai.models.generateContent({
@@ -45,8 +50,8 @@ async function main() {
     fs.writeFileSync("output-room-analysis.json", JSON.stringify(json, null, 2));
     console.log("Success! Saved structured JSON as output-room-analysis.json");
   } catch (err) {
-    console.error("Failed! Gemini did not return valid JSON. Output saved in output.txt");
-    fs.writeFileSync("output.txt", resultText);
+    console.error("Failed! Gemini did not return valid JSON. Output saved in output-room-analysis.txt");
+    fs.writeFileSync("output-room-analysis.txt", resultText);
   }
 }
 

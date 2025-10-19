@@ -37,7 +37,7 @@ const SidePanel: React.FC = () => {
     try {
       const response = await fetch('/output-room-analysis.json');
       if (!response.ok) {
-        throw new Error(`Failed to fetch out-room-analysis.json: ${response.status}`);
+        throw new Error(`Failed to fetch outroom-room-analysis.json: ${response.status}`);
       }
 
       const data = await response.json();

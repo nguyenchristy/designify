@@ -143,49 +143,129 @@ app.post('/analyze-room', upload.single('image'), async (req, res) => {
   }
 });
 
+// app.post('/update-location', async (req, res) => {
+//   try {
+//     const { imagePath, objects } = req.body;
+//     if (!imagePath || !objects) {
+//       return res.status(400).json({ error: 'Missing imagePath or objects' });
+//     }
+
+//     const prompt = `
+//       You are given a room layout and new object coordinates. 
+//       Validate and refine them for spatial coherence — avoid overlap and unrealistic placement.
+//       Return the updated JSON in this format:
+//       {
+//         "objects": [...],
+//         "style": "<same style or adjusted if needed>",
+//         "colorPalette": ["#HEX", ...]
+//       }
+//     `;
+
+//     const base64Image = fs.readFileSync(imagePath, { encoding: 'base64' });
+
+//     const response = await ai.models.generateContent({
+//       model: 'gemini-2.5-flash',
+//       contents: [
+//         { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
+//         { text: prompt },
+//         { text: JSON.stringify({ objects }) }
+//       ]
+//     });
+
+//     let resultText = response.candidates[0].content.parts[0].text;
+//     resultText = resultText.replace(/```json\s*|```/g, '').trim();
+
+//     const updatedLayout = JSON.parse(resultText);
+
+//     fs.writeFileSync('updated-output-room-analysis.json', JSON.stringify(updatedLayout, null, 2));
+
+//     res.json(updatedLayout);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: 'Failed to update room layout' });
+//   }
+// });
+
 app.post('/update-location', async (req, res) => {
   try {
+    console.log("🟢 Received update-location request:", req.body);
+
     const { imagePath, objects } = req.body;
     if (!imagePath || !objects) {
       return res.status(400).json({ error: 'Missing imagePath or objects' });
     }
 
-    const prompt = `
-      You are given a room layout and new object coordinates. 
-      Validate and refine them for spatial coherence — avoid overlap and unrealistic placement.
-      Return the updated JSON in this format:
-      {
-        "objects": [...],
-        "style": "<same style or adjusted if needed>",
-        "colorPalette": ["#HEX", ...]
+    const originalPath = path.join(__dirname, 'output-room-analysis.json');
+    if (!fs.existsSync(originalPath)) {
+      return res.status(400).json({ error: 'Original room analysis not found' });
+    }
+
+    // Load the existing JSON
+    const originalData = JSON.parse(fs.readFileSync(originalPath, 'utf-8'));
+
+    // Make a deep copy to modify
+    const updatedData = structuredClone(originalData);
+
+    // Update only the objects provided
+    for (const updatedObj of objects) {
+      const index = updatedData.objects.findIndex(o => o.name === updatedObj.name);
+      if (index !== -1) {
+        // Merge new coordinates (x, y, etc.)
+        updatedData.objects[index] = { ...updatedData.objects[index], ...updatedObj };
+      } else {
+        // If it's new, add it
+        updatedData.objects.push(updatedObj);
       }
-    `;
+    }
 
-    const base64Image = fs.readFileSync(imagePath, { encoding: 'base64' });
+    // Write the updated layout to a new file
+    const updatedPath = path.join(__dirname, 'updated-output-room-analysis.json');
+    fs.writeFileSync(updatedPath, JSON.stringify(updatedData, null, 2), 'utf-8');
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: [
-        { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
-        { text: prompt },
-        { text: JSON.stringify({ objects }) }
-      ]
-    });
+    console.log("✅ Updated layout saved at:", updatedPath);
 
-    let resultText = response.candidates[0].content.parts[0].text;
-    resultText = resultText.replace(/```json\s*|```/g, '').trim();
+    // Optionally use this new JSON as the basis for next steps (like regenerating the image)
+    res.json(updatedData);
 
-    const updatedLayout = JSON.parse(resultText);
-
-    fs.writeFileSync('updated-output-room-analysis.json', JSON.stringify(updatedLayout, null, 2));
-
-    res.json(updatedLayout);
   } catch (err) {
-    console.error(err);
+    console.error("🔥 Error in /update-location:", err);
     res.status(500).json({ error: 'Failed to update room layout' });
   }
 });
 
+
+app.post('/render-room', async (req, res) => {
+  try {
+    const { layout } = req.body;
+    if (!layout) {
+      return res.status(400).json({ error: 'Missing layout JSON' });
+    }
+
+    const prompt = `
+      Render a photorealistic image of a bedroom based on this JSON layout:
+      ${JSON.stringify(layout, null, 2)}
+      Make sure to follow the positions (x, y, width, height) and style/colorPalette closely.
+      The result should visually represent the described room layout.
+    `;
+
+    const response = await ai.models.generateImage({
+      model: 'gemini-2.0-pro-vision',
+      prompt,
+      size: '1024x1024'
+    });
+
+    const imageBase64 = response.data[0].b64_json;
+    const imageBuffer = Buffer.from(imageBase64, 'base64');
+
+    const outputPath = path.join(__dirname, 'images', 'updated-room.jpg');
+    fs.writeFileSync(outputPath, imageBuffer);
+
+    res.json({ imagePath: `images/updated-room.jpg` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to render updated room', details: err.message });
+  }
+});
 
 
 app.listen(port, () => {

@@ -2,151 +2,88 @@
   "objects": [
     {
       "name": "bed",
-      "x": 0.45,
-      "y": 0.65,
-      "width": 0.7,
-      "height": 0.6
+      "x": 0.53,
+      "y": 0.77,
+      "width": 0.31,
+      "height": 0.38
     },
     {
-      "name": "headboard",
-      "x": 0.45,
-      "y": 0.45,
-      "width": 0.55,
-      "height": 0.18
-    },
-    {
-      "name": "nightstand",
-      "x": 0.18,
-      "y": 0.78,
+      "name": "large potted plant",
+      "x": 0.16,
+      "y": 0.58,
       "width": 0.16,
-      "height": 0.2
+      "height": 0.62
     },
     {
       "name": "nightstand",
-      "x": 0.7,
-      "y": 0.63,
-      "width": 0.1,
-      "height": 0.1
-    },
-    {
-      "name": "table lamp",
-      "x": 0.23,
-      "y": 0.66,
-      "width": 0.09,
-      "height": 0.17
-    },
-    {
-      "name": "table lamp",
-      "x": 0.68,
-      "y": 0.56,
-      "width": 0.07,
-      "height": 0.1
-    },
-    {
-      "name": "pillows",
-      "x": 0.4,
-      "y": 0.49,
-      "width": 0.55,
-      "height": 0.2
-    },
-    {
-      "name": "bench",
-      "x": 0.72,
-      "y": 0.82,
-      "width": 0.45,
-      "height": 0.18
-    },
-    {
-      "name": "rug",
-      "x": 0.5,
-      "y": 0.85,
-      "width": 0.9,
-      "height": 0.3
-    },
-    {
-      "name": "curtains",
-      "x": 0.78,
-      "y": 0.6,
-      "width": 0.2,
-      "height": 0.5
-    },
-    {
-      "name": "sliding door",
-      "x": 0.88,
-      "y": 0.6,
-      "width": 0.25,
-      "height": 0.6
-    },
-    {
-      "name": "chandelier",
-      "x": 0.8,
-      "y": 0.18,
-      "width": 0.2,
-      "height": 0.25
-    },
-    {
-      "name": "ceiling beam",
-      "x": 0.3,
-      "y": 0.07,
-      "width": 0.6,
-      "height": 0.05
-    },
-    {
-      "name": "ceiling beam",
-      "x": 0.6,
-      "y": 0.07,
-      "width": 0.6,
-      "height": 0.05
-    },
-    {
-      "name": "ceiling beam",
-      "x": 0.2,
-      "y": 0.25,
-      "width": 0.3,
-      "height": 0.05
-    },
-    {
-      "name": "accent wall",
-      "x": 0.4,
-      "y": 0.3,
-      "width": 0.7,
-      "height": 0.5
-    },
-    {
-      "name": "flowers",
-      "x": 0.73,
-      "y": 0.51,
-      "width": 0.06,
+      "x": 0.34,
+      "y": 0.73,
+      "width": 0.08,
       "height": 0.09
     },
     {
-      "name": "books",
-      "x": 0.7,
-      "y": 0.77,
-      "width": 0.08,
-      "height": 0.05
+      "name": "table lamp",
+      "x": 0.34,
+      "y": 0.62,
+      "width": 0.03,
+      "height": 0.13
     },
     {
-      "name": "throw blanket",
-      "x": 0.8,
-      "y": 0.78,
-      "width": 0.15,
+      "name": "vase",
+      "x": 0.38,
+      "y": 0.62,
+      "width": 0.03,
+      "height": 0.13
+    },
+    {
+      "name": "floor lamp",
+      "x": 0.76,
+      "y": 0.6,
+      "width": 0.08,
+      "height": 0.53
+    },
+    {
+      "name": "small potted plant",
+      "x": 0.88,
+      "y": 0.79,
+      "width": 0.07,
+      "height": 0.26
+    },
+    {
+      "name": "window",
+      "x": 0.09,
+      "y": 0.44,
+      "width": 0.19,
+      "height": 0.89
+    },
+    {
+      "name": "wooden wall panel (vertical)",
+      "x": 0.43,
+      "y": 0.39,
+      "width": 0.11,
+      "height": 0.78
+    },
+    {
+      "name": "wooden wall panel (horizontal)",
+      "x": 0.31,
+      "y": 0.53,
+      "width": 0.14,
       "height": 0.1
     },
     {
-      "name": "clock",
-      "x": 0.16,
-      "y": 0.73,
-      "width": 0.03,
-      "height": 0.03
+      "name": "doorway",
+      "x": 0.96,
+      "y": 0.56,
+      "width": 0.08,
+      "height": 0.67
     }
   ],
-  "style": "cozy",
+  "style": "minimalist",
   "colorPalette": [
-    "#C06839",
-    "#E5DCD4",
-    "#6D7E6B",
-    "#976C3E",
-    "#B7B1AB"
+    "#F8F8F8",
+    "#D4C5AE",
+    "#4A6F45",
+    "#E8E3DD",
+    "#3E3E3E"
   ]
 }

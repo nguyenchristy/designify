@@ -64,7 +64,20 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 // Serve uploaded files statically
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-// routes uploaded image and gets JSON assets
+// Add route to serve room analysis JSON
+app.get('/api/room-analysis', (req, res) => {
+  const filePath = path.join(__dirname, 'output-room-analysis.json');
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      res.status(500).json({ error: 'Failed to load room analysis' });
+    }
+  });
+});
+
+// ADDED JUST NOW!!
+// analyze-room should be incorporated in post
+// integrates test-gemini code (or tries)
+// maybe i need a new file in frontend
 app.post('/analyze-room', upload.single('image'), async (req, res) => {
   try {
     const filePath = req.file.path;
@@ -113,6 +126,10 @@ app.post('/analyze-room', upload.single('image'), async (req, res) => {
 
     // Clean up uploaded file
     fs.unlinkSync(filePath);
+    const jsonOutputPath = path.join(__dirname, 'output-room-analysis.json');
+    fs.writeFileSync(jsonOutputPath, JSON.stringify(json, null, 2), 'utf-8');
+
+
 
     // Return JSON to frontend
     res.json(json);

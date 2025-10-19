@@ -35,9 +35,9 @@ const SidePanel: React.FC = () => {
   useEffect(() => {
   const loadObjectData = async () => {
     try {
-      const response = await fetch('/outroom-room-analysis.json');
+      const response = await fetch('/outroom-analysis.json');
       if (!response.ok) {
-        throw new Error(`Failed to fetch outroom-room-analysis.json: ${response.status}`);
+        throw new Error(`Failed to fetch outroom-analysis.json: ${response.status}`);
       }
 
       const data = await response.json();

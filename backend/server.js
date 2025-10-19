@@ -5,7 +5,6 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { GoogleGenAI } from "@google/genai";
-// import * as fs from "node:fs";
 import "dotenv/config";
 
 const __filename = fileURLToPath(import.meta.url);

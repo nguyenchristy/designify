@@ -98,6 +98,7 @@ app.post('/analyze-room', upload.single('image'), async (req, res) => {
 
       Guidelines:
       - Detect and list all visible furniture or decorative items. For example: a bed, desk, chair, lamp, rug. 
+      - If there are multiple instances of the same object (e.g., two chairs), list each one with a number. For example: "chair 1", "chair 2".
       - Do not include furniture that people would not normally move such as walls, windows, AC units, floor, nor curtains as objects.
       - Ensure numerical values are floats between 0 and 1.
       - Choose exactly one style.

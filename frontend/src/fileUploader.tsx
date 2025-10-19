@@ -12,6 +12,7 @@ interface FileUploaderProps {
   onFileUpload?: (file: File) => void;
   onUploadSuccess?: (path: string) => void;
   onUploadError?: (error: string) => void;
+  isSubmitted?: (submitted: boolean) => void;
 }
 
 /**
@@ -31,7 +32,7 @@ interface UploadConfirmation {
  * FileUploader Component
  * Handles file selection and uploading to a backend server with a confirmation view
  */
-const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload, onUploadSuccess, onUploadError }) => {
+const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload, onUploadSuccess, onUploadError, isSubmitted }) => {
   // State management for file handling and UI
   const [selectedFile, setSelectedFile] = useState<File | null>(null);        // Stores the currently selected file
   const [isUploading, setIsUploading] = useState(false);                     // Tracks upload status for UI feedback
@@ -125,10 +126,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload, onUploadSucce
     if (!selectedFile) return;
 
     try {
-      // await uploadFile(selectedFile);
-      // setShowConfirmation(true);
-
-      const uploaded = await uploadFile(selectedFile);
+      await uploadFile(selectedFile);
       const formData = new FormData();
       formData.append('image', selectedFile);
 
@@ -142,9 +140,11 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload, onUploadSucce
       const analysisJson = await response.json();
       console.log('Room analysis:', analysisJson);
 
-      setShowConfirmation(true);
+      // Notify parent that submission is complete
+      isSubmitted?.(true);
     } catch (error) {
       console.error('Upload failed:', error);
+      onUploadError?.(error instanceof Error ? error.message : 'Upload failed');
     }
   };
 

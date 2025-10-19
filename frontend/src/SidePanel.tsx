@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './SidePanel.css';
 
 interface ObjectData {
@@ -43,12 +43,14 @@ const SidePanel: React.FC = () => {
     { name: 'Small', scale: 0.6 }
   ];
 
-  useEffect(() => {
-  const loadObjectData = async () => {
+  const loadObjectData = useCallback(async () => {
+    setLoading(true);
     try {
-      const response = await fetch('/outroom-analysis.json');
+      const response = await fetch('http://localhost:3000/api/room-analysis', {
+        cache: 'no-cache'
+      });
       if (!response.ok) {
-        throw new Error(`Failed to fetch outroom-analysis.json: ${response.status}`);
+        throw new Error(`Failed to fetch room analysis: ${response.status}`);
       }
 
       const data = await response.json();
@@ -71,16 +73,44 @@ const SidePanel: React.FC = () => {
       console.log('Color palette:', data.colorPalette);
       
     } catch (error) {
-      console.error('Error loading output.json:', error);
+      console.error('Error loading room analysis:', error);
       setError(error instanceof Error ? error.message : 'Failed to load objects');
       setObjects([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  loadObjectData();
-}, []);
+  // Auto-refresh functionality
+  useEffect(() => {
+    loadObjectData();
+    
+    const interval = setInterval(async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/room-analysis', {
+          cache: 'no-cache'
+        });
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const dataArray = Array.isArray(data.objects) ? data.objects : [];
+        
+        // Check if data has changed by comparing object count and first object's name
+        const hasChanged = 
+          dataArray.length !== objects.length || 
+          (dataArray.length > 0 && objects.length > 0 && dataArray[0].name !== objects[0].name);
+        
+        if (hasChanged) {
+          console.log('Room analysis data updated, refreshing...');
+          loadObjectData();
+        }
+      } catch (error) {
+        // Silently fail for auto-refresh to avoid console spam
+      }
+    }, 3000); // Check every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [loadObjectData, objects.length]);
 
 
   const toggleExpanded = (objectName: string) => {

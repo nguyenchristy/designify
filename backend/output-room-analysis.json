@@ -2,81 +2,88 @@
   "objects": [
     {
       "name": "bed",
-      "x": 0.325,
-      "y": 0.425,
-      "width": 0.65,
-      "height": 0.55
+      "x": 0.53,
+      "y": 0.77,
+      "width": 0.31,
+      "height": 0.38
+    },
+    {
+      "name": "large potted plant",
+      "x": 0.16,
+      "y": 0.58,
+      "width": 0.16,
+      "height": 0.62
     },
     {
       "name": "nightstand",
-      "x": 0.09,
-      "y": 0.765,
-      "width": 0.18,
-      "height": 0.23
+      "x": 0.34,
+      "y": 0.73,
+      "width": 0.08,
+      "height": 0.09
     },
     {
       "name": "table lamp",
-      "x": 0.11,
-      "y": 0.55,
-      "width": 0.12,
-      "height": 0.2
+      "x": 0.34,
+      "y": 0.62,
+      "width": 0.03,
+      "height": 0.13
     },
     {
-      "name": "table lamp",
-      "x": 0.57,
-      "y": 0.55,
-      "width": 0.1,
-      "height": 0.2
+      "name": "vase",
+      "x": 0.38,
+      "y": 0.62,
+      "width": 0.03,
+      "height": 0.13
     },
     {
-      "name": "rug",
-      "x": 0.5,
-      "y": 0.85,
-      "width": 1,
-      "height": 0.3
-    },
-    {
-      "name": "bench",
-      "x": 0.675,
-      "y": 0.88,
-      "width": 0.25,
-      "height": 0.2
-    },
-    {
-      "name": "chandelier",
-      "x": 0.875,
-      "y": 0.15,
-      "width": 0.21,
-      "height": 0.3
-    },
-    {
-      "name": "curtain",
+      "name": "floor lamp",
       "x": 0.76,
-      "y": 0.525,
-      "width": 0.12,
-      "height": 0.35
+      "y": 0.6,
+      "width": 0.08,
+      "height": 0.53
     },
     {
-      "name": "pillows",
-      "x": 0.3,
-      "y": 0.475,
-      "width": 0.6,
-      "height": 0.25
+      "name": "small potted plant",
+      "x": 0.88,
+      "y": 0.79,
+      "width": 0.07,
+      "height": 0.26
     },
     {
-      "name": "sliding door",
-      "x": 0.885,
-      "y": 0.525,
-      "width": 0.23,
-      "height": 0.45
+      "name": "window",
+      "x": 0.09,
+      "y": 0.44,
+      "width": 0.19,
+      "height": 0.89
+    },
+    {
+      "name": "wooden wall panel (vertical)",
+      "x": 0.43,
+      "y": 0.39,
+      "width": 0.11,
+      "height": 0.78
+    },
+    {
+      "name": "wooden wall panel (horizontal)",
+      "x": 0.31,
+      "y": 0.53,
+      "width": 0.14,
+      "height": 0.1
+    },
+    {
+      "name": "doorway",
+      "x": 0.96,
+      "y": 0.56,
+      "width": 0.08,
+      "height": 0.67
     }
   ],
-  "style": "cozy",
+  "style": "minimalist",
   "colorPalette": [
-    "#9F5A30",
-    "#687264",
-    "#D4CBBF",
-    "#AF7D50",
-    "#EEEDE7"
+    "#F8F8F8",
+    "#D4C5AE",
+    "#4A6F45",
+    "#E8E3DD",
+    "#3E3E3E"
   ]
 }

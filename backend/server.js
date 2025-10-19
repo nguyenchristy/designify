@@ -143,49 +143,7 @@ app.post('/analyze-room', upload.single('image'), async (req, res) => {
   }
 });
 
-// app.post('/update-location', async (req, res) => {
-//   try {
-//     const { imagePath, objects } = req.body;
-//     if (!imagePath || !objects) {
-//       return res.status(400).json({ error: 'Missing imagePath or objects' });
-//     }
-
-//     const prompt = `
-//       You are given a room layout and new object coordinates. 
-//       Validate and refine them for spatial coherence — avoid overlap and unrealistic placement.
-//       Return the updated JSON in this format:
-//       {
-//         "objects": [...],
-//         "style": "<same style or adjusted if needed>",
-//         "colorPalette": ["#HEX", ...]
-//       }
-//     `;
-
-//     const base64Image = fs.readFileSync(imagePath, { encoding: 'base64' });
-
-//     const response = await ai.models.generateContent({
-//       model: 'gemini-2.5-flash',
-//       contents: [
-//         { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
-//         { text: prompt },
-//         { text: JSON.stringify({ objects }) }
-//       ]
-//     });
-
-//     let resultText = response.candidates[0].content.parts[0].text;
-//     resultText = resultText.replace(/```json\s*|```/g, '').trim();
-
-//     const updatedLayout = JSON.parse(resultText);
-
-//     fs.writeFileSync('updated-output-room-analysis.json', JSON.stringify(updatedLayout, null, 2));
-
-//     res.json(updatedLayout);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: 'Failed to update room layout' });
-//   }
-// });
-
+// updates location after user chooses where
 app.post('/update-location', async (req, res) => {
   try {
     console.log("🟢 Received update-location request:", req.body);

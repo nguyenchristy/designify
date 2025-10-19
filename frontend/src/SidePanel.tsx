@@ -29,8 +29,19 @@ const SidePanel: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Orange', 'Pink', 'Brown', 'Black'];
-  const materials = ['Wood', 'Metal', 'Plastic', 'Glass', 'Fabric'];
-  const sizes = ['Large', 'Medium', 'Small'];
+  const materials = [
+    { name: 'Wood', image: '/wood.jpg' },
+    { name: 'Metal', image: '/metal.jpg' },
+    { name: 'Velvet', image: '/velvet.jpg' },
+    { name: 'Corduroy', image: '/cord.jpg' },
+    { name: 'Fabric', image: '/fabric.jpg' },
+    { name: 'Leather', image: '/leather.jpg' }
+  ];
+  const sizes = [
+    { name: 'Large', scale: 1.0 },
+    { name: 'Medium', scale: 0.8 },
+    { name: 'Small', scale: 0.6 }
+  ];
 
   useEffect(() => {
   const loadObjectData = async () => {
@@ -234,14 +245,19 @@ const SidePanel: React.FC = () => {
                       <span>Material</span>
                     </div>
                     {designSubExpanded[object.name]?.material && (
-                      <div className="sub-sub-dropdown-content">
+                      <div className="sub-sub-dropdown-content grid-view material-grid">
                         {materials.map(material => (
                           <div 
-                            key={material}
-                            className="sub-sub-dropdown-item"
-                            onClick={() => handleDesignClick(`${object.name}-Material-${material}`)}
+                            key={material.name}
+                            className="material-swatch"
+                            onClick={() => handleDesignClick(`${object.name}-Material-${material.name}`)}
+                            title={material.name}
                           >
-                            <span>{material}</span>
+                            <img 
+                              src={material.image} 
+                              alt={material.name}
+                              className="material-image"
+                            />
                           </div>
                         ))}
                       </div>
@@ -254,14 +270,16 @@ const SidePanel: React.FC = () => {
                       <span>Size</span>
                     </div>
                     {designSubExpanded[object.name]?.size && (
-                      <div className="sub-sub-dropdown-content">
+                      <div className="sub-sub-dropdown-content grid-view size-grid">
                         {sizes.map(size => (
                           <div 
-                            key={size}
-                            className="sub-sub-dropdown-item"
-                            onClick={() => handleDesignClick(`${object.name}-Size-${size}`)}
+                            key={size.name}
+                            className="size-swatch"
+                            onClick={() => handleDesignClick(`${object.name}-Size-${size.name}`)}
+                            title={size.name}
+                            style={{ transform: `scale(${size.scale})` }}
                           >
-                            <span>{size}</span>
+                            <div className="size-indicator"></div>
                           </div>
                         ))}
                       </div>

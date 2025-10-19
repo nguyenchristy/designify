@@ -36,6 +36,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload, onUploadSucce
   // State management for file handling and UI
   const [selectedFile, setSelectedFile] = useState<File | null>(null);        // Stores the currently selected file
   const [isUploading, setIsUploading] = useState(false);                     // Tracks upload status for UI feedback
+  const [isAnalyzing, setIsAnalyzing] = useState(false);                     // Tracks analysis status for loading page
   const [showConfirmation, setShowConfirmation] = useState(false);           // Controls confirmation view visibility
   const [uploadResult, setUploadResult] = useState<UploadConfirmation | null>(null); // Stores upload result data
 
@@ -127,6 +128,8 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload, onUploadSucce
 
     try {
       await uploadFile(selectedFile);
+      setIsAnalyzing(true);
+
       const formData = new FormData();
       formData.append('image', selectedFile);
 
@@ -145,6 +148,8 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload, onUploadSucce
     } catch (error) {
       console.error('Upload failed:', error);
       onUploadError?.(error instanceof Error ? error.message : 'Upload failed');
+    } finally {
+      setIsAnalyzing(false);
     }
   };
 
@@ -208,8 +213,14 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload, onUploadSucce
   // Main component render method
   return (
     <div className="file-uploader">
-      {/* Conditional rendering based on upload state */}
-      {showConfirmation ? (
+      {/* Show loading page during analysis */}
+      {isAnalyzing ? (
+        <div className="loading-page">
+          <div className="spinner"></div>
+          <h2>Analyzing your room...</h2>
+          <p>Please wait while we process your image and generate design suggestions.</p>
+        </div>
+      ) : showConfirmation ? (
         // Show confirmation view after successful upload
         renderConfirmation()
       ) : (

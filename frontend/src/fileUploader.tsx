@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { ChangeEvent } from 'react';
+import './App.css'
 
 /**
  * Props interface for the FileUploader component

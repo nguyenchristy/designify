@@ -4,12 +4,18 @@ import fs from 'fs';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { GoogleGenAI } from "@google/genai";
+// import * as fs from "node:fs";
+import "dotenv/config";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = 3000;
+
+// ai route
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 // Enable CORS
 app.use(cors());
@@ -98,7 +104,7 @@ app.post('/analyze-room', upload.single('image'), async (req, res) => {
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: [
-        { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
+        { inlineData: { mimeType: req.file.mimetype, data: base64Image } },
         { text: prompt }
       ],
     });

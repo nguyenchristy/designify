@@ -125,7 +125,23 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload, onUploadSucce
     if (!selectedFile) return;
 
     try {
-      await uploadFile(selectedFile);
+      // await uploadFile(selectedFile);
+      // setShowConfirmation(true);
+
+      const uploaded = await uploadFile(selectedFile);
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+
+      const response = await fetch('http://localhost:3000/analyze-room', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Analysis failed');
+
+      const analysisJson = await response.json();
+      console.log('Room analysis:', analysisJson);
+
       setShowConfirmation(true);
     } catch (error) {
       console.error('Upload failed:', error);

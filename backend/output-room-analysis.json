@@ -2,81 +2,109 @@
   "objects": [
     {
       "name": "bed",
-      "x": 0.715,
+      "x": 0.45,
+      "y": 0.69,
+      "width": 0.8,
+      "height": 0.58
+    },
+    {
+      "name": "nightstand 1",
+      "x": 0.12,
+      "y": 0.8,
+      "width": 0.2,
+      "height": 0.2
+    },
+    {
+      "name": "nightstand 2",
+      "x": 0.765,
+      "y": 0.8,
+      "width": 0.17,
+      "height": 0.2
+    },
+    {
+      "name": "lamp 1",
+      "x": 0.14,
       "y": 0.65,
-      "width": 0.53,
-      "height": 0.6
+      "width": 0.12,
+      "height": 0.14
+    },
+    {
+      "name": "lamp 2",
+      "x": 0.77,
+      "y": 0.65,
+      "width": 0.12,
+      "height": 0.14
     },
     {
       "name": "bench",
-      "x": 0.385,
-      "y": 0.77,
-      "width": 0.33,
-      "height": 0.16
-    },
-    {
-      "name": "armchair",
-      "x": 0.16,
-      "y": 0.68,
-      "width": 0.24,
-      "height": 0.36
-    },
-    {
-      "name": "side table",
-      "x": 0.07,
-      "y": 0.805,
-      "width": 0.06,
-      "height": 0.09
-    },
-    {
-      "name": "lamp",
-      "x": 0.7,
-      "y": 0.405,
-      "width": 0.06,
-      "height": 0.11
-    },
-    {
-      "name": "nightstand",
-      "x": 0.69,
-      "y": 0.535,
-      "width": 0.06,
-      "height": 0.09
-    },
-    {
-      "name": "plant",
-      "x": 0.36,
-      "y": 0.565,
-      "width": 0.02,
-      "height": 0.05
+      "x": 0.76,
+      "y": 0.86,
+      "width": 0.38,
+      "height": 0.18
     },
     {
       "name": "chandelier",
+      "x": 0.85,
+      "y": 0.225,
+      "width": 0.26,
+      "height": 0.35
+    },
+    {
+      "name": "rug",
       "x": 0.5,
-      "y": 0.125,
-      "width": 0.2,
-      "height": 0.19
+      "y": 0.85,
+      "width": 0.9,
+      "height": 0.3
     },
     {
-      "name": "wall art",
-      "x": 0.045,
-      "y": 0.45,
-      "width": 0.05,
-      "height": 0.1
+      "name": "pillows",
+      "x": 0.45,
+      "y": 0.58,
+      "width": 0.8,
+      "height": 0.2
     },
     {
-      "name": "throw pillow",
-      "x": 0.17,
-      "y": 0.705,
+      "name": "throw blanket",
+      "x": 0.875,
+      "y": 0.79,
+      "width": 0.15,
+      "height": 0.08
+    },
+    {
+      "name": "tray",
+      "x": 0.75,
+      "y": 0.76,
+      "width": 0.1,
+      "height": 0.04
+    },
+    {
+      "name": "books",
+      "x": 0.75,
+      "y": 0.76,
+      "width": 0.06,
+      "height": 0.02
+    },
+    {
+      "name": "vase with flowers",
+      "x": 0.8,
+      "y": 0.69,
       "width": 0.04,
-      "height": 0.05
+      "height": 0.08
+    },
+    {
+      "name": "clock",
+      "x": 0.135,
+      "y": 0.715,
+      "width": 0.03,
+      "height": 0.03
     }
   ],
   "style": "cozy",
   "colorPalette": [
-    "#F5F0EC",
-    "#FFFFFF",
-    "#ACC8C8",
-    "#C8B29C",
-    "#5A4535"
+    "#7F4E2D",
+    "#6A7B69",
+    "#E8E5DF",
+    "#96673D",
+    "#C3BEB3"
   ]
 }

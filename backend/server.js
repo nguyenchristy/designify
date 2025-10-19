@@ -4,7 +4,9 @@ import fs from 'fs';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Modality } from "@google/genai";
+import OpenAI from "openai";
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 import "dotenv/config";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -67,15 +69,22 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 // Serve uploaded files statically
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-// Add route to serve room analysis JSON
 app.get('/api/room-analysis', (req, res) => {
-  const filePath = path.join(__dirname, 'output-room-analysis.json');
+  const filePath = req.query.updated === 'true'
+    ? path.join(__dirname, 'updated-output-room-analysis.json')
+    : path.join(__dirname, 'output-room-analysis.json');
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: 'Room analysis not found' });
+  }
+
   res.sendFile(filePath, (err) => {
     if (err) {
       res.status(500).json({ error: 'Failed to load room analysis' });
     }
   });
 });
+
 
 // post request for analyzing the room for assets, returns json
 app.post('/analyze-room', upload.single('image'), async (req, res) => {
@@ -165,16 +174,30 @@ app.post('/update-location', async (req, res) => {
     const updatedData = structuredClone(originalData);
 
     // Update only the objects provided
-    for (const updatedObj of objects) {
-      const index = updatedData.objects.findIndex(o => o.name === updatedObj.name);
-      if (index !== -1) {
-        // Merge new coordinates (x, y, etc.)
-        updatedData.objects[index] = { ...updatedData.objects[index], ...updatedObj };
-      } else {
-        // If it's new, add it
-        updatedData.objects.push(updatedObj);
+    // for (const updatedObj of objects) {
+    //   const index = updatedData.objects.findIndex(o => o.name === updatedObj.name);
+    //   if (index !== -1) {
+    //     // Merge new coordinates (x, y, etc.)
+    //     updatedData.objects[index] = { ...updatedData.objects[index], ...updatedObj };
+    //   } else {
+    //     // If it's new, add it
+    //     updatedData.objects.push(updatedObj);
+    //   }
+    // }
+    // Merge updates while keeping all original objects
+    const updatedNames = objects.map(o => o.name);
+    updatedData.objects = updatedData.objects.map(obj => {
+      const match = objects.find(o => o.name === obj.name);
+      return match ? { ...obj, ...match } : obj;
+    });
+
+    // Add any brand-new objects
+    for (const obj of objects) {
+      if (!updatedData.objects.some(o => o.name === obj.name)) {
+        updatedData.objects.push(obj);
       }
     }
+
 
     // Write the updated layout to a new file
     const updatedPath = path.join(__dirname, 'updated-output-room-analysis.json');
@@ -192,38 +215,149 @@ app.post('/update-location', async (req, res) => {
 });
 
 
-app.post('/render-room', async (req, res) => {
+// app.post("/render-room", async (req, res) => {
+//   try {
+//     const { layout } = req.body;
+//     if (!layout) {
+//       return res.status(400).json({ error: "Missing layout JSON" });
+//     }
+
+//     const { style, colorPalette, objects, imagePath } = layout;
+
+//     // Read base image
+//     const inputImagePath =
+//       imagePath || path.join(__dirname, "images", "default-room.jpg");
+
+//     if (!fs.existsSync(inputImagePath)) {
+//       return res.status(400).json({ error: "Base room image not found" });
+//     }
+
+//     const imageData = fs.readFileSync(inputImagePath);
+//     const base64Image = imageData.toString("base64");
+
+//     // 🧠 Build prompt
+//     const prompt = [
+//       {
+//         // text: `
+//         //   You are a visual AI model. Update this ${style} room according to the new layout:
+//         //   - Objects: ${objects.map((o) => `${o.name} at (x=${o.x}, y=${o.y})`).join(", ")}.
+//         //   - Use color palette: ${colorPalette.join(", ")}.
+//         //   Maintain photorealism and room structure.
+//         // `,
+//         text: `
+//         Edit the provided image to reflect these specific layout changes:
+//         - Move or reposition furniture according to the coordinates below.
+//         - Add or remove objects as listed.
+//         - Maintain the same room, perspective, and lighting.
+
+//         Layout JSON:
+//         ${JSON.stringify(objects, null, 2)}
+
+//         The output must look like a realistic photo update of the original image — not a new scene.
+//       `,
+
+//       },
+//       {
+//         inlineData: {
+//           mimeType: "image/jpeg",
+//           data: base64Image,
+//         },
+//       },
+//     ];
+
+//     // 🪄 Generate image
+//     const result = await ai.models.generateContent({
+//       model: "gemini-2.5-flash-image",
+//       contents: prompt,
+//     });
+
+//     // 🖼️ Save image
+//     const parts = result.candidates[0].content.parts;
+//     let outputFile;
+//     for (const part of parts) {
+//       if (part.inlineData) {
+//         const buffer = Buffer.from(part.inlineData.data, "base64");
+//         outputFile = path.join(__dirname, "images", "updated-room.jpg");
+//         fs.writeFileSync(outputFile, buffer);
+//         console.log("🖼️ Updated image saved:", outputFile);
+//       }
+//     }
+
+//     if (!outputFile) {
+//       return res.status(500).json({ error: "No image data received from Gemini" });
+//     }
+
+//     res.json({ imagePath: `images/updated-room.jpg` });
+//   } catch (err) {
+//     console.error("🚨 Failed to render updated room:", err);
+//     res.status(500).json({ error: "Failed to render updated room", details: err.message });
+//   }
+// });
+
+app.post("/render-room", async (req, res) => {
   try {
+    console.log("🖼️ Generating new room image with Imagen...");
+
     const { layout } = req.body;
     if (!layout) {
-      return res.status(400).json({ error: 'Missing layout JSON' });
+      return res.status(400).json({ error: "Missing layout JSON" });
     }
 
+    const { style, colorPalette, objects, imagePath } = layout;
+
+    // ✅ Load base image (optional)
+    const inputImagePath = imagePath
+      ? path.join(__dirname, imagePath)
+      : path.join(__dirname, "images", "default-room.jpg");
+
+    if (!fs.existsSync(inputImagePath)) {
+      return res.status(400).json({ error: "Base image not found" });
+    }
+
+    const baseImage = fs.readFileSync(inputImagePath);
+    const base64Image = baseImage.toString("base64");
+
+    // ✅ Build descriptive prompt
     const prompt = `
-      Render a photorealistic image of a bedroom based on this JSON layout:
-      ${JSON.stringify(layout, null, 2)}
-      Make sure to follow the positions (x, y, width, height) and style/colorPalette closely.
-      The result should visually represent the described room layout.
+      Generate a realistic ${style} bedroom image.
+      Reflect these layout updates:
+      ${objects.map(o => `- ${o.name} at (x=${o.x}, y=${o.y})`).join("\n")}
+      Use this color palette: ${colorPalette.join(", ")}.
+      Keep the same lighting, camera angle, and room structure as the input image.
+      Only adjust the object positions — do not redesign the entire room.
     `;
 
-    const response = await ai.models.generateImage({
-      model: 'gemini-2.0-pro-vision',
-      prompt,
-      size: '1024x1024'
+    // ✅ Call Imagen
+    const response = await ai.models.generateImages({
+      model: "imagen-3.0-generate-001",
+      prompt: prompt,
+      config: {
+        numberOfImages: 1,
+      },
     });
 
-    const imageBase64 = response.data[0].b64_json;
-    const imageBuffer = Buffer.from(imageBase64, 'base64');
+    // ✅ Save the generated image
+    const generatedImage = response.generatedImages?.[0];
+    if (!generatedImage?.image?.imageBytes) {
+      throw new Error("No image bytes returned from Imagen");
+    }
 
-    const outputPath = path.join(__dirname, 'images', 'updated-room.jpg');
-    fs.writeFileSync(outputPath, imageBuffer);
+    const buffer = Buffer.from(generatedImage.image.imageBytes, "base64");
+    const outputPath = path.join(__dirname, "images", "updated-room.jpg");
+    fs.writeFileSync(outputPath, buffer);
+    console.log("✅ Saved updated room image:", outputPath);
 
     res.json({ imagePath: `images/updated-room.jpg` });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to render updated room', details: err.message });
+    console.error("🚨 Imagen render failed:", err);
+    res.status(500).json({
+      error: "Failed to render updated room",
+      details: err.message,
+    });
   }
 });
+
+
 
 
 app.listen(port, () => {

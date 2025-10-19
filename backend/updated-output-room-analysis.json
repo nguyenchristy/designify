@@ -1,0 +1,27 @@
+{
+  "objects": [
+    {
+      "name": "bed",
+      "x": 0.4,
+      "y": 0.5,
+      "width": 0.7,
+      "height": 0.47
+    },
+    {
+      "name": "lamp",
+      "x": 0.12,
+      "y": 0.35,
+      "width": 0.08,
+      "height": 0.2
+    }
+  ],
+  "style": "Modern Rustic",
+  "colorPalette": [
+    "#A05C33",
+    "#6B7F61",
+    "#D1C7BB",
+    "#A6784A",
+    "#F8F8F8",
+    "#B4AAA2"
+  ]
+}

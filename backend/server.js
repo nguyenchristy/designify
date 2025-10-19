@@ -33,7 +33,7 @@ const upload = multer({
   }
 });
 
-// Handle file upload
+// Handle file upload 
 app.post('/api/upload', upload.single('image'), (req, res) => {
   try {
     if (!req.file) {
@@ -54,6 +54,10 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
     console.error('Upload error:', error);
     res.status(500).json({ error: 'Error uploading file' });
   }
+
+
+  // maybe try catch here
+
 });
 
 // Serve uploaded files statically
@@ -61,7 +65,10 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 
 // ADDED JUST NOW!!
-app.post('/analyze-room', upload.single('roomImage'), async (req, res) => {
+// analyze-room should be incorporated in post
+// integrates test-gemini code (or tries)
+// maybe i need a new file in frontend
+app.post('/analyze-room', upload.single('image'), async (req, res) => {
   try {
     const filePath = req.file.path;
     const imageData = fs.readFileSync(filePath);

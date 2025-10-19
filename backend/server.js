@@ -1,5 +1,6 @@
 import express from 'express';
 import multer from 'multer';
+import fs from 'fs';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -57,6 +58,67 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 
 // Serve uploaded files statically
 app.use('/images', express.static(path.join(__dirname, 'images')));
+
+
+// ADDED JUST NOW!!
+app.post('/analyze-room', upload.single('roomImage'), async (req, res) => {
+  try {
+    const filePath = req.file.path;
+    const imageData = fs.readFileSync(filePath);
+    const base64Image = imageData.toString('base64');
+
+    const prompt = `
+      Analyze this room image and describe its layout.
+      Return a JSON object with this structure (no markdown, no backticks, no explanations):
+      {
+        "objects": [
+          {"name": "bed", "x": 0.2, "y": 0.5, "width": 1.2, "height": 2.0},
+          {"name": "desk", "x": 0.7, "y": 0.3, "width": 1.0, "height": 0.8}
+        ],
+        "style": "modern" | "cozy" | "minimalist",
+        "colorPalette": ["#HEX", "#HEX", ...]
+      }
+
+      Guidelines:
+      - Detect and list all visible furniture or decorative items (like a bed, desk, chair, lamp, rug, curtain, chandelier, etc.).
+      - Ensure numerical values are floats between 0 and 1.
+      - Choose exactly one style.
+      - Include exactly 5 dominant colors as hex codes (no color names or explanations).
+      - Do not include explanations — only valid JSON.
+    `;
+
+    // call Gemini
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: [
+        { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
+        { text: prompt }
+      ],
+    });
+
+    let resultText = response.candidates[0].content.parts[0].text;
+    resultText = resultText.replace(/```json\s*|```/g, '').trim();
+
+    // Parse JSON
+    let json;
+    try {
+      json = JSON.parse(resultText);
+    } catch (err) {
+      return res.status(500).json({ error: 'Gemini returned invalid JSON', raw: resultText });
+    }
+
+    // Clean up uploaded file
+    fs.unlinkSync(filePath);
+
+    // Return JSON to frontend
+    res.json(json);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to analyze image' });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

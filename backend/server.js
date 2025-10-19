@@ -114,6 +114,10 @@ app.post('/analyze-room', upload.single('image'), async (req, res) => {
     // Clean up uploaded file
     fs.unlinkSync(filePath);
 
+    // Write the analysis result to a fixed JSON file
+    const jsonOutputPath = path.join(__dirname, 'output-room-analysis.json');
+    fs.writeFileSync(jsonOutputPath, JSON.stringify(json, null, 2), 'utf-8');
+
     // Return JSON to frontend
     res.json(json);
 
